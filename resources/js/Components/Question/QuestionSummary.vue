@@ -55,8 +55,8 @@ defineProps({
                             />
                             {{ question.user.name }}
                         </a>
-                        <span class="text-muted"
-                            >asked
+                        <span class="text-muted">
+                            - asked
                             <time :datetime="question.created_at.machine">{{
                                 question.created_at.human
                             }}</time></span
