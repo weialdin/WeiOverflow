@@ -1,4 +1,5 @@
 <script setup>
+import Author from "../../Components/Author.vue";
 import AppLayout from "../../Layouts/AppLayout.vue";
 defineProps({
     question: {
@@ -115,29 +116,10 @@ defineProps({
                                     <li><a href="#" class="tag">Laravel</a></li>
                                     <li><a href="#" class="tag">OOP</a></li>
                                 </ul>
-                                <div class="author owner">
-                                    <div class="author-info">
-                                        <div class="text-muted mb-1">
-                                            Asked
-                                            {{ question.created_at.formatted }}
-                                        </div>
-                                        <a href="#" class="avatar-md">
-                                            <div
-                                                class="d-flex align-items-center justify-content-start"
-                                            >
-                                                <img
-                                                    :src="
-                                                        question.user.avatar_url
-                                                    "
-                                                    class="me-2"
-                                                />
-                                                <span>{{
-                                                    question.user.name
-                                                }}</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
+                                <Author
+                                    :post-at="question.created_at"
+                                    :user="question.user"
+                                />
                             </div>
                             <div class="post-action">
                                 <div

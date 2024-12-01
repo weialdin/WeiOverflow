@@ -48,7 +48,7 @@ defineProps({
                     <div class="question-summary-author">
                         <a href="#" class="avatar-sm">
                             <img
-                                src="https://i.pravatar.cc/150?img=30"
+                                :src="question.user.avatar_url"
                                 size="16"
                                 alt=""
                                 srcset=""
