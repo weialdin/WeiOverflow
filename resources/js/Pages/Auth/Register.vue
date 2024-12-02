@@ -28,8 +28,11 @@ const form = useForm({
                                 <div class="form-floating mb-3">
                                     <input
                                         type="text"
-                                        class="form-control is-invalid"
+                                        class="form-control"
                                         name="name"
+                                        :class="{
+                                            'is-invalid': form.errors.name,
+                                        }"
                                         v-model="form.name"
                                         id="name"
                                         placeholder="Name"
@@ -37,8 +40,11 @@ const form = useForm({
                                     <label for="name" class="form-label"
                                         >Name</label
                                     >
-                                    <div class="invalid-feedback">
-                                        The name field is required
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="form.errors.name"
+                                    >
+                                        {{ form.errors.name }}
                                     </div>
                                 </div>
                             </div>
@@ -48,6 +54,9 @@ const form = useForm({
                                         type="email"
                                         class="form-control"
                                         name="email"
+                                        :class="{
+                                            'is-invalid': form.errors.email,
+                                        }"
                                         v-model="form.email"
                                         id="email"
                                         placeholder="Email"
@@ -55,6 +64,12 @@ const form = useForm({
                                     <label for="email" class="form-label"
                                         >Email</label
                                     >
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="form.errors.email"
+                                    >
+                                        {{ form.errors.email }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -63,6 +78,9 @@ const form = useForm({
                                         type="password"
                                         class="form-control"
                                         name="password"
+                                        :class="{
+                                            'is-invalid': form.errors.password,
+                                        }"
                                         v-model="form.password"
                                         id="password"
                                         value=""
@@ -71,6 +89,12 @@ const form = useForm({
                                     <label for="password" class="form-label"
                                         >Password</label
                                     >
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="form.errors.password"
+                                    >
+                                        {{ form.errors.password }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -79,6 +103,11 @@ const form = useForm({
                                         type="password"
                                         class="form-control"
                                         name="password_confirmation"
+                                        :class="{
+                                            'is-invalid':
+                                                form.errors
+                                                    .password_confirmation,
+                                        }"
                                         v-model="form.password_confirmation"
                                         id="password_confirmation"
                                         value=""
@@ -87,6 +116,12 @@ const form = useForm({
                                     <label for="password" class="form-label"
                                         >Password Confirmation</label
                                     >
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="form.errors.password_confirmation"
+                                    >
+                                        {{ form.errors.password_confirmation }}
+                                    </div>
                                 </div>
                             </div>
 
