@@ -1,3 +1,7 @@
+<script setup>
+import { Link } from "@inertiajs/vue3";
+</script>
+
 <template>
     <nav class="navbar navbar-expand-lg navbar-laravelflow">
         <div class="container">
@@ -16,11 +20,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a
+                        <Link
                             class="nav-link active"
                             aria-current="page"
-                            href="index.html"
-                            >Questions</a
+                            :href="route('questions.index')"
+                            >Questions</Link
                         >
                     </li>
                     <li class="nav-item">
@@ -56,8 +60,8 @@
                         <a href="login.html" class="btn btn-outline-secondary"
                             >Log in</a
                         >
-                        <a href="register.html" class="btn btn-primary"
-                            >Sign up</a
+                        <Link :href="route('register')" class="btn btn-primary"
+                            >Sign up</Link
                         >
                     </li>
                 </ul>
