@@ -1,5 +1,13 @@
 <script setup>
+import { useForm } from "@inertiajs/vue3";
 import GuestLayout from "../../Layouts/GuestLayout.vue";
+
+const form = useForm({
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+});
 </script>
 
 <template>
@@ -14,7 +22,7 @@ import GuestLayout from "../../Layouts/GuestLayout.vue";
                             </div>
                         </div>
                     </div>
-                    <form action="#">
+                    <form @submit.prevent="form.post('/register')">
                         <div class="row gy-2 overflow-hidden">
                             <div class="col-12">
                                 <div class="form-floating mb-3">
@@ -22,6 +30,7 @@ import GuestLayout from "../../Layouts/GuestLayout.vue";
                                         type="text"
                                         class="form-control is-invalid"
                                         name="name"
+                                        v-model="form.name"
                                         id="name"
                                         placeholder="Name"
                                     />
@@ -39,6 +48,7 @@ import GuestLayout from "../../Layouts/GuestLayout.vue";
                                         type="email"
                                         class="form-control"
                                         name="email"
+                                        v-model="form.email"
                                         id="email"
                                         placeholder="Email"
                                     />
@@ -53,6 +63,7 @@ import GuestLayout from "../../Layouts/GuestLayout.vue";
                                         type="password"
                                         class="form-control"
                                         name="password"
+                                        v-model="form.password"
                                         id="password"
                                         value=""
                                         placeholder="Password"
@@ -68,6 +79,7 @@ import GuestLayout from "../../Layouts/GuestLayout.vue";
                                         type="password"
                                         class="form-control"
                                         name="password_confirmation"
+                                        v-model="form.password_confirmation"
                                         id="password_confirmation"
                                         value=""
                                         placeholder="Password"
