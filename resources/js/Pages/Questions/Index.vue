@@ -14,6 +14,7 @@
                                 v-for="question in questions.data"
                                 :key="question.id"
                                 :question="question"
+                                @edit="editQuestion"
                             />
                         </ul>
                     </div>
@@ -23,7 +24,7 @@
                     <div class="d-grid">
                         <button
                             class="btn btn-primary"
-                            @click.prevent="showModal"
+                            @click.prevent="askQuestion"
                         >
                             Ask Question
                         </button>
@@ -63,8 +64,13 @@
                 </div>
             </div>
         </div>
-        <Modal id="question-modal" title="Ask Question" size="large" scrollable>
-            <QuestionForm />
+        <Modal
+            id="question-modal"
+            :title="state.modalTitle"
+            size="large"
+            scrollable
+        >
+            <QuestionForm @success="hideModal" />
         </Modal>
     </AppLayout>
 
@@ -96,6 +102,7 @@ defineProps({
 
 const state = reactive({
     modalRef: null,
+    modalTitle: "Ask Question",
 });
 
 onMounted(() => {
@@ -108,4 +115,14 @@ onMounted(() => {
 const showModal = () => state.modalRef.show();
 
 const hideModal = () => state.modalRef.hide();
+
+const editQuestion = (question) => {
+    state.modalTitle = "Edit Question";
+    showModal();
+};
+
+const askQuestion = () => {
+    state.modalTitle = "Ask Question";
+    showModal();
+};
 </script>
