@@ -14,7 +14,7 @@ const formData = {
     id: props.question.id,
 };
 
-const form = useForm({ formData });
+const form = useForm(formData);
 
 const emit = defineEmits(["success"]);
 
