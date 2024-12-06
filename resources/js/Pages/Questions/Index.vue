@@ -15,6 +15,7 @@
                                 :key="question.id"
                                 :question="question"
                                 @edit="editQuestion"
+                                @remove="removeQuestion"
                             />
                         </ul>
                     </div>
@@ -105,7 +106,7 @@
 <script setup>
 import { onMounted, onUnmounted, reactive, ref } from "vue";
 import * as bootstrap from "bootstrap";
-import { Link, Head } from "@inertiajs/vue3";
+import { Link, Head, router } from "@inertiajs/vue3";
 import AppLayout from "../../Layouts/AppLayout.vue";
 import QuestionSummary from "../../Components/Question/QuestionSummary.vue";
 import Pagination from "../../Components/Pagination.vue";
@@ -158,5 +159,13 @@ const askQuestion = () => {
     editing.value = false;
     state.modalTitle = "Ask Question";
     showModal();
+};
+
+const removeQuestion = (payload) => {
+    if (confirm("are you sure?")) {
+        router.delete(route("questions.destroy", payload.id), {
+            preserveScroll: true,
+        });
+    }
 };
 </script>

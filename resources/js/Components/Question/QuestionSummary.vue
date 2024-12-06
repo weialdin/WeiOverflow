@@ -5,11 +5,11 @@ import PostActionButton from "../PostActionButton.vue";
 defineProps({
     question: {
         type: Object,
-        Required: true,
+        required: true,
     },
 });
 
-const emit = defineEmits("edit", "remove");
+const emit = defineEmits(["edit", "remove"]);
 </script>
 
 <template>
@@ -66,7 +66,14 @@ const emit = defineEmits("edit", "remove");
                         >
                     </div>
                 </div>
-                <PostActionButton @edit="emit('edit', question)" />
+                <PostActionButton
+                    v-if="
+                        $page.props.user &&
+                        $page.props.user.id == question.user.id
+                    "
+                    @edit="emit('edit', question)"
+                    @remove="emit('remove', question)"
+                />
             </div>
         </div>
     </li>
