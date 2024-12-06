@@ -69,8 +69,27 @@
             :title="state.modalTitle"
             size="large"
             scrollable
+            @hidden="editing = false"
         >
-            <CreateQuestionForm :question="question" @success="hideModal" />
+            <!-- ini metode v-if-v-else -->
+
+            <!-- <EditQuestionForm
+                :question="question"
+                @success="hideModal"
+                v-if="editing"
+            />
+            <CreateQuestionForm
+                :question="question"
+                @success="hideModal"
+                v-else
+            /> -->
+
+            <!-- ini metode dinamis -->
+            <component
+                :is="editing ? EditQuestionForm : CreateQuestionForm"
+                :question="question"
+                @success="hideModal"
+            />
         </Modal>
     </AppLayout>
 
@@ -84,7 +103,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, reactive } from "vue";
+import { onMounted, onUnmounted, reactive, ref } from "vue";
 import * as bootstrap from "bootstrap";
 import { Link, Head } from "@inertiajs/vue3";
 import AppLayout from "../../Layouts/AppLayout.vue";
@@ -92,6 +111,7 @@ import QuestionSummary from "../../Components/Question/QuestionSummary.vue";
 import Pagination from "../../Components/Pagination.vue";
 import Modal from "../../Components/Modal.vue";
 import CreateQuestionForm from "../../Components/Question/CreateQuestionForm.vue";
+import EditQuestionForm from "../../Components/Question/EditQuestionForm.vue";
 
 defineProps({
     questions: {
@@ -111,6 +131,8 @@ const question = reactive({
     body: null,
 });
 
+const editing = ref(false);
+
 onMounted(() => {
     state.modalRef = new bootstrap.Modal("#question-modal", {
         backdrop: "static",
@@ -122,12 +144,18 @@ const showModal = () => state.modalRef.show();
 
 const hideModal = () => state.modalRef.hide();
 
-const editQuestion = (question) => {
+const editQuestion = (payload) => {
+    editing.value = true;
     state.modalTitle = "Edit Question";
+
+    question.id = payload.id;
+    question.title = payload.title;
+    question.body = payload.body;
     showModal();
 };
 
 const askQuestion = () => {
+    editing.value = false;
     state.modalTitle = "Ask Question";
     showModal();
 };
