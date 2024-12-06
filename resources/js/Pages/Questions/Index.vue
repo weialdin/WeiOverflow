@@ -70,7 +70,7 @@
             size="large"
             scrollable
         >
-            <QuestionForm @success="hideModal" />
+            <CreateQuestionForm :question="question" @success="hideModal" />
         </Modal>
     </AppLayout>
 
@@ -91,7 +91,7 @@ import AppLayout from "../../Layouts/AppLayout.vue";
 import QuestionSummary from "../../Components/Question/QuestionSummary.vue";
 import Pagination from "../../Components/Pagination.vue";
 import Modal from "../../Components/Modal.vue";
-import QuestionForm from "../../Components/Question/QuestionForm.vue";
+import CreateQuestionForm from "../../Components/Question/CreateQuestionForm.vue";
 
 defineProps({
     questions: {
@@ -103,6 +103,12 @@ defineProps({
 const state = reactive({
     modalRef: null,
     modalTitle: "Ask Question",
+});
+
+const question = reactive({
+    id: null,
+    title: null,
+    body: null,
 });
 
 onMounted(() => {

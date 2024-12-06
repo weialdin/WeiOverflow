@@ -6,6 +6,11 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    method: String,
+    action: {
+        type: String,
+        required: true,
+    },
 });
 
 const formData = {
@@ -14,12 +19,15 @@ const formData = {
     id: props.question.id,
 };
 
+if (props.method) {
+    formData._method = props.method;
+}
 const form = useForm(formData);
 
 const emit = defineEmits(["success"]);
 
 const submit = () => {
-    form.post(route("questions.store"), {
+    form.post(props.action, {
         onSuccess: () => {
             form.reset();
             emit("success");
@@ -134,7 +142,9 @@ hit there</textarea
             >
                 Close
             </button>
-            <button type="submit" class="btn btn-primary">Post</button>
+            <button type="submit" class="btn btn-primary">
+                {{ question.id ? "Update" : "Post" }}
+            </button>
         </div>
     </form>
 </template>
