@@ -7,21 +7,30 @@ use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
+use Illuminate\Http\Request;
 
 
 class QuestionController extends Controller
 {
     
-    public function index()
+    public function index(Request $request)
     {
-            $questions = QuestionResource::collection(
-            Question::with('user')->latest()->paginate(10)
-        );
+        $filter = $request->query('filter', 'latest');
+        
+        $questions = Question::with('user')
+            ->when($filter === 'mine', function ($query) {
+                $query->mine();
+            })
+            ->latest()
+            ->paginate(10);
 
         return inertia('Questions/Index', [
-            'questions' => $questions
+            'questions' => QuestionResource::collection($questions),
+            'filter' => $filter,
         ]);
+
     }
+
 
    
     public function create()
