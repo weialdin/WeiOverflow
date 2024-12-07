@@ -42,4 +42,11 @@ class Question extends Model
 
         $query->whereBelongsTo($user);
     }
+
+    public function answers() 
+    {
+
+        return $this->hasMany(Answer::class);
+    }
+
 }
