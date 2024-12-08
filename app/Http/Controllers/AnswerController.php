@@ -7,6 +7,7 @@ use App\Http\Requests\StoreAnswerRequest;
 use App\Http\Requests\UpdateAnswerRequest;
 use App\Http\Resources\AnswerResource;
 use App\Models\Question;
+use Illuminate\Support\Facades\Gate;
 
 class AnswerController extends Controller
 {
@@ -47,14 +48,19 @@ class AnswerController extends Controller
     }
 
     
-    public function update(UpdateAnswerRequest $request, Answer $answer)
+    public function update(UpdateAnswerRequest $request, Question $question, Answer $answer)
     {
-        //
+        // Gate::authorize('update', $answer); --> //via updateAnswerRequest
+        
+        $answer->update($request->validated());
+
+        return back()->with('success', 'Your answer updated succesfully');
     }
 
    
     public function destroy(Question $question, Answer $answer)
     {
+        Gate::authorize('delete', $answer);
         $answer->delete();
 
         return back()->with('success', 'Your answer has been deleted');

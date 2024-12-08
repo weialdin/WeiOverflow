@@ -1,6 +1,13 @@
 <script setup>
 import Pagination from "../Pagination.vue";
 import AnswersContent from "./AnswersContent.vue";
+import useModal from "../../Composable/useModal";
+import { reactive } from "vue";
+import UpdateAnswer from "./UpdateAnswer.vue";
+
+const { showModal, hideModal, modalTitle, Modal } = useModal(
+    "#update-answer-modal"
+);
 
 defineProps({
     answers: {
@@ -8,6 +15,22 @@ defineProps({
         required: true,
     },
 });
+
+const editingAnswer = reactive({
+    body: "",
+    question_id: "",
+    id: "",
+});
+
+const editAnswer = (payload) => {
+    modalTitle.value = "Editing Answer";
+
+    editingAnswer.body = payload.body;
+    editingAnswer.question_id = payload.question_id;
+    editingAnswer.id = payload.id;
+
+    showModal();
+};
 </script>
 
 <template>
@@ -20,6 +43,19 @@ defineProps({
             v-for="answer in answers.data"
             :key="answer.id"
             :answer="answer"
+            @edit="editAnswer"
         />
     </div>
+    <Modal
+        id="update-answer-modal"
+        :title="modalTitle"
+        size="large"
+        @hidden="editingAnswer.body"
+    >
+        <UpdateAnswer
+            :answer="editingAnswer"
+            @success="hideModal"
+            v-if="editingAnswer.body"
+        />
+    </Modal>
 </template>
