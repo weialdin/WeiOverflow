@@ -17,7 +17,7 @@ const props = defineProps({
 });
 
 const postAtString = computed(() => {
-    const prefix = props.isAnswer ? "Answer At" : "Asked at";
+    const prefix = props.isAnswer ? "Asked At" : "Answer At";
     return prefix + " " + props.postAt.formatted;
 });
 
