@@ -48,7 +48,7 @@
         </div>
         <Modal
             id="question-modal"
-            :title="state.modalTitle"
+            :title="modalTitle"
             size="large"
             scrollable
             @hidden="editing = false"
@@ -85,16 +85,17 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, reactive, ref } from "vue";
-import * as bootstrap from "bootstrap";
-import { Link, Head, router } from "@inertiajs/vue3";
+import { reactive, ref } from "vue";
+import { Head, router } from "@inertiajs/vue3";
 import AppLayout from "../../Layouts/AppLayout.vue";
 import QuestionSummary from "../../Components/Question/QuestionSummary.vue";
 import Pagination from "../../Components/Pagination.vue";
-import Modal from "../../Components/Modal.vue";
 import CreateQuestionForm from "../../Components/Question/CreateQuestionForm.vue";
 import EditQuestionForm from "../../Components/Question/EditQuestionForm.vue";
 import QuestionFilter from "../../Components/Question/QuestionFilter.vue";
+import useModal from "../../Composable/useModal";
+
+const { showModal, hideModal, modalTitle, Modal } = useModal("#question-modal");
 
 defineProps({
     questions: {
@@ -102,11 +103,6 @@ defineProps({
         required: true,
     },
     filter: String,
-});
-
-const state = reactive({
-    modalRef: null,
-    modalTitle: "Ask Question",
 });
 
 const question = reactive({
@@ -117,20 +113,9 @@ const question = reactive({
 
 const editing = ref(false);
 
-onMounted(() => {
-    state.modalRef = new bootstrap.Modal("#question-modal", {
-        backdrop: "static",
-        keyboard: false,
-    });
-});
-
-const showModal = () => state.modalRef.show();
-
-const hideModal = () => state.modalRef.hide();
-
 const editQuestion = (payload) => {
     editing.value = true;
-    state.modalTitle = "Edit Question";
+    modalTitle.value = "Edit Question";
 
     question.id = payload.id;
     question.title = payload.title;
@@ -140,7 +125,7 @@ const editQuestion = (payload) => {
 
 const askQuestion = () => {
     editing.value = false;
-    state.modalTitle = "Ask Question";
+    modalTitle.value = "Ask Question";
     showModal();
 };
 
