@@ -29,7 +29,7 @@ class QuestionController extends Controller
              // Filter untuk pertanyaan yang belum dijawab
         })
         ->when($filter === 'scored', function ($query) {
-            $query->has('answers');
+            $query->whereNotNull('best_answer_id');
             // Filter untuk pertanyaan yang telah dijawab dan diberi skor
         })
         ->when($filter === 'most_answered', function ($query) { 

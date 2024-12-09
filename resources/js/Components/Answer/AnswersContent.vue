@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "vue";
 import { router } from "@inertiajs/vue3";
 import Author from "../Author.vue";
 import PostActionButton from "../PostActionButton.vue";
@@ -9,6 +10,11 @@ const props = defineProps({
         required: true,
     },
 });
+
+const classes = computed(() => ({
+    "answer-accepted": props.answer.is_best,
+    "text-secondary": !props.answer.is_best,
+}));
 
 const emit = defineEmits(["edit", "remove"]);
 
@@ -82,7 +88,8 @@ const removeAnswer = () => {
                 </button>
                 <button
                     title="Mark the answer ans accepted"
-                    class="btn p-0 answer-accepted"
+                    class="btn p-0"
+                    :class="classes"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
