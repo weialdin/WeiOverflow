@@ -1,11 +1,11 @@
 <script setup>
-import { Head } from "@inertiajs/vue3";
+import { Head, router } from "@inertiajs/vue3";
 import Author from "../../Components/Author.vue";
 import AppLayout from "../../Layouts/AppLayout.vue";
 import Answers from "../../Components/Answer/Answers.vue";
 import CreateAnswer from "../../Components/Answer/CreateAnswer.vue";
 
-defineProps({
+const props = defineProps({
     question: {
         type: Object,
         required: true,
@@ -15,6 +15,22 @@ defineProps({
         required: true,
     },
 });
+
+const bookmark = () => {
+    if (props.question.is_bookmarked) {
+        router.delete(route("questions.bookmark.destroy", props.question.id), {
+            preserveScroll: true,
+        });
+    } else {
+        router.post(
+            route("questions.bookmark.store", props.question.id),
+            {},
+            {
+                preserveScroll: true,
+            }
+        );
+    }
+};
 </script>
 
 <template>
@@ -96,6 +112,11 @@ defineProps({
                                 <button
                                     title="Bookmark the post"
                                     class="btn text-secondary"
+                                    @click="bookmark"
+                                    :class="{
+                                        'question-bookmarked':
+                                            question.is_bookmarked,
+                                    }"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"

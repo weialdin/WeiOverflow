@@ -47,7 +47,7 @@ class Question extends Model
     {
 
         return $this->hasMany(Answer::class);
-        
+
     }
 
     public function acceptAnswer(Answer $answer)
@@ -58,11 +58,22 @@ class Question extends Model
     
     }
 
+    public function bookmarkedBy(?User $user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+
+        return $this->bookmarks()->where('user_id', $user->id)->exists();
+    }
+
     public function bookmarks()
     {
 
         return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps();
     
     }
+
+
 
 }
