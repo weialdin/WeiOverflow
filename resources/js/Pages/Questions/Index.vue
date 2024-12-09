@@ -1,14 +1,18 @@
 <template>
     <AppLayout>
-        <div class="container">
+        <div class="container mx-auto px-4 py-8">
             <div class="row">
+                <!-- Kolom Kiri: Pertanyaan -->
                 <div class="col-md-9">
-                    <div
-                        class="d-flex align-items-center justify-content-between"
-                    >
-                        <h1 class="page-header">All Questions</h1>
+                    <div class="d-flex items-center justify-between mb-4">
+                        <h1 class="text-3xl font-semibold text-gray-600">
+                            All Questions
+                        </h1>
                     </div>
-                    <div class="card mt-3">
+
+                    <div
+                        class="card shadow-lg rounded-lg bg-white overflow-hidden"
+                    >
                         <ul class="list-group list-group-flush">
                             <QuestionSummary
                                 v-for="question in questions.data"
@@ -19,33 +23,46 @@
                             />
                         </ul>
                     </div>
-                    <Pagination :meta="questions.meta" />
+
+                    <!-- Pagination -->
+                    <Pagination :meta="questions.meta" class="mt-6" />
                 </div>
+
+                <!-- Kolom Kanan: Sidebar -->
                 <div class="col-md-3">
                     <div class="d-grid">
                         <button
-                            class="btn btn-primary"
+                            class="btn btn-primary bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
                             @click.prevent="askQuestion"
                         >
                             Ask Question
                         </button>
                     </div>
+
+                    <!-- Filter -->
                     <QuestionFilter :filter="filter" />
-                    <h2 class="fs-5 mt-5">Related Tags</h2>
-                    <ul class="tags-list mt-3">
-                        <li><a href="#" class="tag mb-2">Javascript</a></li>
-                        <li><a href="#" class="tag mb-2">JQuery</a></li>
-                        <li><a href="#" class="tag mb-2">Vue.js</a></li>
-                        <li><a href="#" class="tag mb-2">React.js</a></li>
-                        <li><a href="#" class="tag mb-2">Inertia.js</a></li>
-                        <li><a href="#" class="tag mb-2">PHP</a></li>
-                        <li><a href="#" class="tag mb-2">Laravel</a></li>
-                        <li><a href="#" class="tag mb-2">Bootstrap</a></li>
-                        <li><a href="#" class="tag mb-2">Tailwind</a></li>
-                    </ul>
+
+                    <!-- Related Tags -->
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800 mt-6">
+                            Related Tags
+                        </h2>
+                        <ul class="tags-list mt-4">
+                            <li v-for="tag in tags" :key="tag">
+                                <a
+                                    href="#"
+                                    class="tag bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out"
+                                >
+                                    {{ tag }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Modal -->
         <Modal
             id="question-modal"
             :title="modalTitle"
@@ -53,20 +70,6 @@
             scrollable
             @hidden="editing = false"
         >
-            <!-- ini metode v-if-v-else -->
-
-            <!-- <EditQuestionForm
-                :question="question"
-                @success="hideModal"
-                v-if="editing"
-            />
-            <CreateQuestionForm
-                :question="question"
-                @success="hideModal"
-                v-else
-            /> -->
-
-            <!-- ini metode dinamis -->
             <component
                 :is="editing ? EditQuestionForm : CreateQuestionForm"
                 :question="question"
@@ -74,12 +77,6 @@
             />
         </Modal>
     </AppLayout>
-
-    <!-- <div v-for="question in questions" :key="question.id">
-        <Link :href="route('questions.show', question.id)">
-            {{ question.title }}
-        </Link>
-    </div> -->
 
     <Head title="All Questions" />
 </template>
@@ -104,6 +101,18 @@ defineProps({
     },
     filter: String,
 });
+
+const tags = [
+    "Javascript",
+    "JQuery",
+    "Vue.js",
+    "React.js",
+    "Inertia.js",
+    "PHP",
+    "Laravel",
+    "Bootstrap",
+    "Tailwind",
+];
 
 const question = reactive({
     id: null,
@@ -130,10 +139,48 @@ const askQuestion = () => {
 };
 
 const removeQuestion = (payload) => {
-    if (confirm("are you sure?")) {
+    if (confirm("Are you sure?")) {
         router.delete(route("questions.destroy", payload.id), {
             preserveScroll: true,
         });
     }
 };
 </script>
+
+<style scoped>
+/* Card Styling */
+.card {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.card .list-group-item {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Button Styling */
+button {
+    width: 100%;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #007bff;
+}
+
+/* Tags Styling */
+.tag {
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 9999px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.tag:hover {
+    background-color: #3490dc;
+    color: white;
+    transform: scale(1.05);
+}
+</style>

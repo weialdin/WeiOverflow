@@ -88,10 +88,10 @@ defineProps({
 
 .nav-link:hover,
 .nav-link.active {
-    background-color: #007bff;
+    background-color: #1784ff;
     color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+    box-shadow: 0 5px 15px rgba(23, 132, 255);
 }
 
 .filter-item {
@@ -107,13 +107,13 @@ defineProps({
 }
 
 .nav-link.active {
-    background-color: #0056b3;
+    background-color: #1784ff;
     color: #fff;
-    box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+    box-shadow: 0 4px 12px rgba(23, 132, 255);
 }
 
 .nav-link:hover {
-    background-color: #0056b3;
+    background-color: #1784ff;
     color: #fff;
 }
 </style>

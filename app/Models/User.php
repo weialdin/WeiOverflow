@@ -56,6 +56,11 @@ class User extends Authenticatable
         return $this->hasMany(Answer::class);
     }
 
+    public function bookmarks()
+    {
+        return $this->belongsToMany(Question::class, 'bookmarks')->withTimestamps();
+    }
+
 
     public function avatarUrl()
     {

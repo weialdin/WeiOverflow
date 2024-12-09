@@ -47,6 +47,22 @@ class Question extends Model
     {
 
         return $this->hasMany(Answer::class);
+        
+    }
+
+    public function acceptAnswer(Answer $answer)
+    {
+
+        $this->best_answer_id = $answer->id;
+        $this->save();
+    
+    }
+
+    public function bookmarks()
+    {
+
+        return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps();
+    
     }
 
 }

@@ -31,6 +31,12 @@ const removeAnswer = () => {
         );
     }
 };
+
+const acceptAnswer = () => {
+    router.post(route("questions.answers.accept", props.answer.id), {
+        preserveScroll: true,
+    });
+};
 </script>
 
 <template>
@@ -88,6 +94,8 @@ const removeAnswer = () => {
                 </button>
                 <button
                     title="Mark the answer ans accepted"
+                    :disabled="!answer.can_be.accepted"
+                    @click="acceptAnswer"
                     class="btn p-0"
                     :class="classes"
                 >
@@ -122,3 +130,9 @@ const removeAnswer = () => {
         </div>
     </div>
 </template>
+
+<style scoped>
+.btn:disabled {
+    border-color: transparent;
+}
+</style>
