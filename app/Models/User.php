@@ -58,8 +58,34 @@ class User extends Authenticatable
 
     public function bookmarks()
     {
+
         return $this->belongsToMany(Question::class, 'bookmarks')->withTimestamps();
+    
     }
+
+    public function voteQuestion()
+    {
+        return $this->morphedByMany(Question::class, 'voteable');
+    }
+
+    public function VotingQuestion(Question $question, int $vote)
+    {
+        $voteQuestion = $this->voteQuestion();
+
+        if ($voteQuestion->where('voteable_id', $question->id)->exists()) {
+            $voteQuestion->updateExistingPivot($question, ['vote' => $vote]);
+        } else {
+            $voteQuestion->attach($question, ['vote' => $vote]);
+        }
+
+        $question->load('votes');
+        $question->votes_count = $question->votes()->sum('vote');
+        $question->save();
+
+    }
+
+
+
 
 
     public function avatarUrl()

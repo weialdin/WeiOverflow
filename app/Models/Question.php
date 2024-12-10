@@ -74,6 +74,11 @@ class Question extends Model
     
     }
 
+    public function votes()
+    {
+        return $this->morphtoMany(User::class, 'voteable');
+    }
+
 
 
 }
