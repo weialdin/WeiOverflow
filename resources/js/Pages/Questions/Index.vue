@@ -72,7 +72,6 @@
         >
             <component
                 :is="editing ? EditQuestionForm : CreateQuestionForm"
-                :question="question"
                 @success="hideModal"
             />
         </Modal>
