@@ -6,6 +6,7 @@ import Answers from "../../Components/Answer/Answers.vue";
 import CreateAnswer from "../../Components/Answer/CreateAnswer.vue";
 import Voteable from "../../Components/Voteable.vue";
 import useVote from "../../Composable/useVote";
+import TagsInline from "../../Components/Tags/TagsInline.vue";
 
 const props = defineProps({
     question: {
@@ -85,11 +86,8 @@ const { upVote, downVote } = useVote(props.question, "questions.vote");
                         <div
                             class="d-flex justify-content-between align-items start py-3"
                         >
-                            <ul class="tags-inline">
-                                <li><a href="#" class="tag">PHP</a></li>
-                                <li><a href="#" class="tag">Laravel</a></li>
-                                <li><a href="#" class="tag">OOP</a></li>
-                            </ul>
+                            <TagsInline :tags="question.tags" />
+
                             <Author
                                 :post-at="question.created_at"
                                 :user="question.user"

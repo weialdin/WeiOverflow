@@ -15,40 +15,42 @@ class QuestionController extends Controller
 {
 
     public function index(Request $request)
-{
-    $filter = $request->query('filter', 'latest');
-    
-    $questions = Question::with('user')
-        ->withCount('answers')
-        ->when($filter === 'mine', function ($query) {
-            $query->mine();
-            // Filter untuk pertanyaan yang dimiliki oleh user saat ini
-        })
-        ->when($filter === 'unanswered', function ($query) {
-            $query->doesntHave('answers');
-             // Filter untuk pertanyaan yang belum dijawab
-        })
-        ->when($filter === 'scored', function ($query) {
-            $query->whereNotNull('best_answer_id');
-            // Filter untuk pertanyaan yang telah dijawab dan diberi skor
-        })
-        ->when($filter === 'most_answered', function ($query) { 
-            $query->withCount('answers')                             // Hitung jumlah jawaban
-                  ->orderByDesc('answers_count');                    // Urutkan berdasarkan jumlah jawaban terbanyak
-            // Filter untuk pertanyaan dengan jumlah jawaban terbanyak
-        })
-        ->when($filter === 'latest', function ($query) {
-            $query->latest();
-            // Default untuk pertanyaan terbaru
-        })
-        ->paginate(10)
-        ->appends(['filter' => $filter]);
+    {
 
-    return inertia('Questions/Index', [
-        'questions' => QuestionResource::collection($questions),
-        'filter' => $filter,
-    ]);
-}
+        $filter = $request->query('filter', 'latest');
+
+        $questions = Question::with(['user', 'tags']) // tadi error tags tidak bisa diampilkan, solusinya Tambahkan 'tags' di sini
+            ->withCount('answers')
+            ->when($filter === 'mine', function ($query) {
+                $query->mine();
+                // Filter untuk pertanyaan yang dimiliki oleh user saat ini
+            })
+            ->when($filter === 'unanswered', function ($query) {
+                $query->doesntHave('answers');
+                // Filter untuk pertanyaan yang belum dijawab
+            })
+            ->when($filter === 'scored', function ($query) {
+                $query->whereNotNull('best_answer_id');
+                // Filter untuk pertanyaan yang telah dijawab dan diberi skor
+            })
+            ->when($filter === 'most_answered', function ($query) { 
+                $query->withCount('answers')                             // Hitung jumlah jawaban
+                    ->orderByDesc('answers_count');                      // Urutkan berdasarkan jumlah jawaban terbanyak
+                // Filter untuk pertanyaan dengan jumlah jawaban terbanyak
+            })
+            ->when($filter === 'latest', function ($query) {
+                $query->latest();
+                // Default untuk pertanyaan terbaru
+            })
+            ->paginate(10)
+            ->appends(['filter' => $filter]);
+
+        return inertia('Questions/Index', [
+            'questions' => QuestionResource::collection($questions),
+            'filter' => $filter,
+        ]);
+    }
+
 
    
     public function create()

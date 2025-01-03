@@ -5,9 +5,18 @@
                 <!-- Kolom Kiri: Pertanyaan -->
                 <div class="col-md-9">
                     <div class="d-flex items-center justify-between mb-4">
-                        <h1 class="text-3xl font-semibold text-gray-600">
+                        <h1
+                            class="text-3xl font-semibold text-gray-600"
+                            v-if="!tag.name"
+                        >
                             All Questions
                         </h1>
+                        <h1 class="text-3xl font-semibold text-gray-600" v-else>
+                            Question Tagged [{{ tag.name }}]
+                        </h1>
+                    </div>
+                    <div class="py-2" v-if="tag.description">
+                        {{ tag.description }}
                     </div>
 
                     <div
@@ -99,6 +108,11 @@ defineProps({
         type: Object,
         required: true,
     },
+    tag: {
+        type: Object,
+        default: () => ({}),
+    },
+
     filter: String,
 });
 

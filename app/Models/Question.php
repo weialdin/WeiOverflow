@@ -76,9 +76,16 @@ class Question extends Model
 
     public function votes()
     {
+
         return $this->morphtoMany(User::class, 'voteable');
+    
     }
 
+    public function tags()
+    {
 
+        return $this->belongsToMany(Tag::class);
+    
+    }
 
 }
